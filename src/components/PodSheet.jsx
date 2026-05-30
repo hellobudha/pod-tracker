@@ -75,7 +75,7 @@ export default function PodSheet({ pod, onSave, onDelete, onClose }) {
         ref={sheetRef}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white rounded-t-3xl z-50 shadow-2xl
+        className={`fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[430px] bg-white rounded-t-3xl z-50 shadow-2xl
           ${closing ? 'animate-slide-down' : 'animate-slide-up'}`}
         style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom))' }}
       >
@@ -198,12 +198,12 @@ export default function PodSheet({ pod, onSave, onDelete, onClose }) {
 
       <style>{`
         @keyframes slide-up {
-          from { transform: translateX(-50%) translateY(100%); }
-          to   { transform: translateX(-50%) translateY(0); }
+          from { transform: translateY(100%); }
+          to   { transform: translateY(0); }
         }
         @keyframes slide-down {
-          from { transform: translateX(-50%) translateY(0); }
-          to   { transform: translateX(-50%) translateY(100%); }
+          from { transform: translateY(0); }
+          to   { transform: translateY(100%); }
         }
         .animate-slide-up  { animation: slide-up  0.28s cubic-bezier(0.32,0.72,0,1) both; }
         .animate-slide-down { animation: slide-down 0.28s cubic-bezier(0.32,0.72,0,1) both; }
