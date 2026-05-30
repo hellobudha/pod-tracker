@@ -1,0 +1,15 @@
+const STATUS = {
+  liked:       { label: 'Liked',       className: 'bg-emerald-100 text-emerald-700' },
+  too_mild:    { label: 'Too Mild',    className: 'bg-amber-100 text-amber-700' },
+  too_strong:  { label: 'Too Strong',  className: 'bg-red-100 text-red-700' },
+  yet_to_try:  { label: 'Yet to Try', className: 'bg-violet-100 text-violet-700' },
+}
+
+export default function StatusBadge({ status }) {
+  const s = STATUS[status] ?? STATUS.yet_to_try
+  return (
+    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${s.className}`}>
+      {s.label}
+    </span>
+  )
+}
