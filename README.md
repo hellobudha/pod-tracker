@@ -1,16 +1,91 @@
-# React + Vite
+# ☕ Pod Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A mobile-first **progressive web app** for tracking Nespresso Vertuo pod ratings, tasting notes, and reorder status. Built for a single user, installable to the iPhone home screen, and works entirely offline — no backend, no accounts.
 
-Currently, two official plugins are available:
+**Live:** [pod-tracker-indol.vercel.app](https://pod-tracker-indol.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Collection view** — pods grouped into Coffee, Flavored & Specialty, and Decaf, each split into *Tried* and *Yet to Try*.
+- **Pod cards** — name, status badge, strength + aroma ratings (1–5 pips), and a notes preview. Decaf pods get a blue accent.
+- **Add / edit sheet** — an iOS-style slide-up bottom sheet, dismissible by tapping the backdrop or swiping down. Capture status, strength, aroma, free-text notes, and a reorder flag.
+- **Reorder list** — a filtered view of everything marked for reorder, with one-tap copy to clipboard for pasting into an Amazon / Nespresso order.
+- **Baseline reminder** — your tasting baseline (*Black · Monkfruit powder · No milk · No sugar*) shown in the header so ratings stay consistent.
+- **Haptics** — light vibration on status changes (where supported).
+- **Offline-first PWA** — installs to the home screen and runs fullscreen via a service worker.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| | |
+|---|---|
+| Frontend | React + Vite |
+| Styling | Tailwind CSS v4 |
+| Persistence | `localStorage` (seeded on first launch) |
+| PWA | `vite-plugin-pwa` (manifest + service worker) |
+| Hosting | Vercel (auto-deploy on push to `main`) |
+
+## Getting Started
+
+```bash
+npm install
+npm run dev        # dev server on http://localhost:5174
+npm run build      # production build to /dist
+npm run preview    # preview the production build
+```
+
+## Project Structure
+
+```
+src/
+  components/
+    PodCard.jsx        Pod summary card
+    PodSheet.jsx       Add / edit bottom sheet
+    ReorderList.jsx    Reorder tab + clipboard copy
+    NavBar.jsx         Bottom tab navigation
+    StatusBadge.jsx    Colour-coded status pill
+    IntensityPicker.jsx 1–5 tap rating selector
+  hooks/
+    usePods.js         CRUD + localStorage sync
+  data/
+    seed.js            Initial pod data
+  App.jsx              Layout, tabs, FAB
+  main.jsx
+public/
+  icon-192.png, icon-512.png   Home-screen icons
+```
+
+## Data Model
+
+```jsonc
+{
+  "id": "uuid",
+  "name": "Colombia",
+  "category": "coffee",        // coffee | flavored | decaf
+  "decaf": false,
+  "status": "liked",           // liked | too_mild | too_strong | yet_to_try
+  "intensity": 4,              // strength, 1–5
+  "aroma": 3,                  // 1–5
+  "notes": "Strong enough. Clean finish.",
+  "reorder": true,
+  "triedOn": "2026-05-15",
+  "addedOn": "2026-05-15"
+}
+```
+
+## Install on iPhone
+
+1. Open the [live URL](https://pod-tracker-indol.vercel.app/) in Safari.
+2. Tap **Share → Add to Home Screen**.
+3. Name it *Pod Tracker* → **Add**.
+
+The app launches fullscreen with the seed pods pre-loaded. Use **Settings → Reset all data** to restore defaults.
+
+## Deployment
+
+The repo is connected to Vercel and auto-deploys every push to `main`. Vercel auto-detects the Vite build — no extra configuration required.
+
+---
+
+🤖 Built with [Claude Code](https://claude.com/claude-code)
