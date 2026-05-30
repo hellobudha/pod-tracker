@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode (toggled by .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --sat: env(safe-area-inset-top);
   --sab: env(safe-area-inset-bottom);
@@ -25,3 +28,6 @@ body {
   position: relative;
   background: #f3f4f6;
 }
+
+.dark body { background-color: #0b0d12; }
+.dark #root { background: #0b0d12; }
