@@ -18,6 +18,7 @@ function migrate(pod) {
     priceUrl: null,
     priceUpdatedAt: null,
     priceManual: false,
+    reorderQty: 1,
     ...pod,
   }
   if (pod.category === 'flavored') {

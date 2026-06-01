@@ -210,7 +210,7 @@ export default function App() {
             />
           </>
         )}
-        {tab === 'reorder' && <ReorderList pods={pods} />}
+        {tab === 'reorder' && <ReorderList pods={pods} onUpdate={updatePod} />}
         {tab === 'settings' && <SettingsView theme={theme} setTheme={setTheme} prices={prices} />}
       </main>
 
