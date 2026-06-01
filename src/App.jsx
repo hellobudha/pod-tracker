@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { usePods } from './hooks/usePods'
 import { useTheme } from './hooks/useTheme'
+import { usePrices } from './hooks/usePrices'
 import PodCard from './components/PodCard'
 import PodSheet from './components/PodSheet'
+import CommandBar from './components/CommandBar'
 import ReorderList from './components/ReorderList'
 import NavBar from './components/NavBar'
 
@@ -13,8 +15,18 @@ const CATEGORY_LABELS = {
   coffee: 'Coffee',
 }
 
-function CollectionView({ pods, onPodTap }) {
+function CollectionView({ pods, onPodTap, onQuickUpdate }) {
   const categories = ['espresso', 'double_espresso', 'gran_lungo', 'coffee']
+
+  if (pods.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-gray-400 dark:text-gray-500 px-8 text-center">
+        <p className="text-4xl mb-3">☕</p>
+        <p className="text-sm">No pods yet.</p>
+        <p className="text-xs mt-1">Tap the ✨ button to add one by voice or text.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="px-4 pt-2 pb-4 space-y-5">
@@ -32,7 +44,7 @@ function CollectionView({ pods, onPodTap }) {
             {tried.length > 0 && (
               <div className="space-y-2 mb-2">
                 {tried.map(pod => (
-                  <PodCard key={pod.id} pod={pod} onClick={() => onPodTap(pod)} />
+                  <PodCard key={pod.id} pod={pod} onClick={() => onPodTap(pod)} onQuickUpdate={onQuickUpdate} />
                 ))}
               </div>
             )}
@@ -44,7 +56,7 @@ function CollectionView({ pods, onPodTap }) {
                 </p>
                 <div className="space-y-2">
                   {untried.map(pod => (
-                    <PodCard key={pod.id} pod={pod} onClick={() => onPodTap(pod)} />
+                    <PodCard key={pod.id} pod={pod} onClick={() => onPodTap(pod)} onQuickUpdate={onQuickUpdate} />
                   ))}
                 </div>
               </>
@@ -56,13 +68,39 @@ function CollectionView({ pods, onPodTap }) {
   )
 }
 
+function StatsHeader({ pods }) {
+  const tried = pods.filter(p => p.status !== 'yet_to_try').length
+  const liked = pods.filter(p => p.status === 'liked').length
+  const toTry = pods.filter(p => p.status === 'yet_to_try').length
+  const stats = [
+    { label: 'Tried', value: tried },
+    { label: 'Liked', value: liked },
+    { label: 'To Try', value: toTry },
+  ]
+  if (pods.length === 0) return null
+  return (
+    <div className="px-4 pt-3">
+      <div className="grid grid-cols-3 gap-2">
+        {stats.map(s => (
+          <div key={s.label} className="bg-white dark:bg-gray-800 rounded-2xl py-2.5 text-center shadow-sm">
+            <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 leading-none">{s.value}</p>
+            <p className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider mt-1">{s.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const THEMES = [
   { value: 'light',  label: 'Light' },
   { value: 'dark',   label: 'Dark' },
   { value: 'system', label: 'System' },
 ]
 
-function SettingsView({ theme, setTheme }) {
+function SettingsView({ theme, setTheme, prices }) {
+  const { state, summary, refreshPrices } = prices
+
   function resetData() {
     if (confirm('Reset all pod data to defaults?')) {
       localStorage.removeItem('pod-tracker-pods')
@@ -75,6 +113,28 @@ function SettingsView({ theme, setTheme }) {
       <div className="bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-sm mb-4">
         <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Your Baseline</p>
         <p className="text-sm font-medium text-gray-800 dark:text-gray-100">Black · Monkfruit powder · No milk · No sugar</p>
+      </div>
+
+      {/* Prices */}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-sm mb-4">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Nespresso Prices (US · USD)</p>
+        <button
+          type="button"
+          onClick={refreshPrices}
+          disabled={state === 'loading'}
+          className="w-full bg-emerald-500 disabled:opacity-50 text-white font-semibold py-2.5 rounded-xl text-sm active:bg-emerald-600 transition-colors"
+        >
+          {state === 'loading' ? 'Fetching prices…' : 'Refresh prices'}
+        </button>
+        {state === 'done' && summary && (
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+            {summary.matched} of {summary.total} matched
+            {summary.degraded ? ' — Nespresso prices unavailable right now.' : '.'}
+          </p>
+        )}
+        {state === 'error' && (
+          <p className="text-xs text-amber-600 dark:text-amber-400 mt-2">Couldn’t reach the price service. Try again later.</p>
+        )}
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-sm mb-4">
@@ -114,15 +174,14 @@ function SettingsView({ theme, setTheme }) {
 export default function App() {
   const { pods, addPod, updatePod, deletePod } = usePods()
   const { theme, setTheme } = useTheme()
+  const prices = usePrices({ pods, updatePod })
   const [tab, setTab] = useState('collection')
-  const [sheet, setSheet] = useState(null) // null | 'new' | pod object
+  const [sheet, setSheet] = useState(null)        // null | { pod } | { draft }
+  const [commandOpen, setCommandOpen] = useState(false)
 
   function handleSave(form) {
-    if (sheet === 'new') {
-      addPod(form)
-    } else {
-      updatePod(sheet.id, form)
-    }
+    if (sheet?.pod) updatePod(sheet.pod.id, form)
+    else addPod(form)
   }
 
   const tabTitles = { collection: 'My Pods', reorder: 'Reorder List', settings: 'Settings' }
@@ -142,28 +201,48 @@ export default function App() {
       {/* Content */}
       <main className="flex-1 overflow-y-auto pb-24">
         {tab === 'collection' && (
-          <CollectionView pods={pods} onPodTap={pod => setSheet(pod)} />
+          <>
+            <StatsHeader pods={pods} />
+            <CollectionView
+              pods={pods}
+              onPodTap={pod => setSheet({ pod })}
+              onQuickUpdate={updatePod}
+            />
+          </>
         )}
         {tab === 'reorder' && <ReorderList pods={pods} />}
-        {tab === 'settings' && <SettingsView theme={theme} setTheme={setTheme} />}
+        {tab === 'settings' && <SettingsView theme={theme} setTheme={setTheme} prices={prices} />}
       </main>
 
-      {/* FAB */}
+      {/* FAB — command entry point */}
       {tab === 'collection' && (
         <button
           type="button"
-          onClick={() => setSheet('new')}
+          onClick={() => setCommandOpen(true)}
+          aria-label="Quick command"
           className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] right-4 w-14 h-14 bg-emerald-500 text-white rounded-full shadow-lg text-2xl flex items-center justify-center active:scale-95 transition-transform z-30"
         >
-          +
+          ✨
         </button>
       )}
 
       <NavBar active={tab} onChange={setTab} />
 
+      {commandOpen && (
+        <CommandBar
+          pods={pods}
+          addPod={addPod}
+          updatePod={updatePod}
+          onClose={() => setCommandOpen(false)}
+          onAddManually={() => { setCommandOpen(false); setSheet({ draft: {} }) }}
+          onEditPod={({ pod, draft }) => { setCommandOpen(false); setSheet(pod ? { pod } : { draft }) }}
+        />
+      )}
+
       {sheet !== null && (
         <PodSheet
-          pod={sheet === 'new' ? null : sheet}
+          pod={sheet.pod}
+          draft={sheet.draft}
           onSave={handleSave}
           onDelete={deletePod}
           onClose={() => setSheet(null)}

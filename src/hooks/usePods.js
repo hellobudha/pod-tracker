@@ -9,7 +9,17 @@ const CUP_SIZES = ['espresso', 'double_espresso', 'gran_lungo', 'coffee']
 // Migrate the old model (category was coffee/flavored/decaf) to the new one
 // where category is a cup size and decaf/flavored are independent tags.
 function migrate(pod) {
-  const next = { flavored: false, ...pod }
+  const next = {
+    flavored: false,
+    pricePerPod: null,
+    priceSleeve: null,
+    podsPerSleeve: null,
+    priceCurrency: 'USD',
+    priceUrl: null,
+    priceUpdatedAt: null,
+    priceManual: false,
+    ...pod,
+  }
   if (pod.category === 'flavored') {
     next.category = 'coffee'
     next.flavored = true
@@ -26,7 +36,7 @@ function load() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) return JSON.parse(raw).map(migrate)
-  } catch {}
+  } catch { /* ignore malformed storage */ }
   return null
 }
 
