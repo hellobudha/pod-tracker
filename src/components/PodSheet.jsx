@@ -176,7 +176,7 @@ export default function PodSheet({ pod, onSave, onDelete, onClose }) {
             <span
               className={`shrink-0 w-12 h-7 rounded-full transition-colors relative ${form.reorder ? 'bg-emerald-500' : 'bg-gray-300 dark:bg-gray-600'}`}
             >
-              <span className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform ${form.reorder ? 'translate-x-5' : 'translate-x-0.5'}`} />
+              <span className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform ${form.reorder ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
             </span>
           </button>
 
