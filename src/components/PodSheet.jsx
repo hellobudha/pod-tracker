@@ -93,11 +93,10 @@ export default function PodSheet({ pod, onSave, onDelete, onClose }) {
           <div className="mb-4">
             <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">Pod Name</label>
             <input
-              className="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-3 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-emerald-400"
               value={form.name}
               onChange={e => set('name', e.target.value)}
               placeholder="e.g. Colombia"
-              autoFocus={isNew}
             />
           </div>
 
@@ -156,7 +155,7 @@ export default function PodSheet({ pod, onSave, onDelete, onClose }) {
           <div className="mb-4">
             <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">Tasting Notes</label>
             <textarea
-              className="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+              className="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-3 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
               rows={3}
               value={form.notes}
               onChange={e => set('notes', e.target.value)}
@@ -165,16 +164,21 @@ export default function PodSheet({ pod, onSave, onDelete, onClose }) {
           </div>
 
           {/* Reorder toggle */}
-          <div className="mb-5 flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-xl px-4 py-3">
-            <span className="text-sm text-gray-700 dark:text-gray-200">Add to reorder list</span>
-            <button
-              type="button"
-              onClick={() => set('reorder', !form.reorder)}
-              className={`w-12 h-6 rounded-full transition-colors relative ${form.reorder ? 'bg-emerald-500' : 'bg-gray-300 dark:bg-gray-600'}`}
+          <button
+            type="button"
+            onClick={() => {
+              set('reorder', !form.reorder)
+              if (navigator.vibrate) navigator.vibrate(10)
+            }}
+            className="w-full mb-5 flex items-center justify-between gap-3 bg-gray-50 dark:bg-gray-800 rounded-xl px-4 min-h-[52px] py-3 text-left active:bg-gray-100 dark:active:bg-gray-700 transition-colors"
+          >
+            <span className="text-base text-gray-700 dark:text-gray-200">Add to reorder list</span>
+            <span
+              className={`shrink-0 w-12 h-7 rounded-full transition-colors relative ${form.reorder ? 'bg-emerald-500' : 'bg-gray-300 dark:bg-gray-600'}`}
             >
-              <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.reorder ? 'translate-x-6' : 'translate-x-0.5'}`} />
-            </button>
-          </div>
+              <span className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform ${form.reorder ? 'translate-x-5' : 'translate-x-0.5'}`} />
+            </span>
+          </button>
 
           {/* Actions */}
           <button

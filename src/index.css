@@ -31,3 +31,12 @@ body {
 
 .dark body { background-color: #0b0d12; }
 .dark #root { background: #0b0d12; }
+
+/* Prevent iOS Safari from auto-zooming when a text field is focused.
+   Any input/textarea/select under 16px triggers the zoom. */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
