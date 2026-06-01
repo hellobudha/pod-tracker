@@ -2,7 +2,7 @@ import { useState } from 'react'
 import StatusBadge from './StatusBadge'
 
 const STATUS_OPTIONS = [
-  { value: 'liked',      label: 'Liked',      color: 'bg-emerald-500' },
+  { value: 'liked',      label: '👍 Liked',   color: 'bg-emerald-500' },
   { value: 'too_mild',   label: 'Too Mild',   color: 'bg-amber-400' },
   { value: 'too_strong', label: 'Too Strong', color: 'bg-red-400' },
   { value: 'yet_to_try', label: 'Yet to Try', color: 'bg-violet-400' },
