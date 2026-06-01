@@ -1,85 +1,70 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Fun, vibrant background -->
     <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#13C58A"/>
-      <stop offset="0.55" stop-color="#0E9E76"/>
-      <stop offset="1" stop-color="#0B6B53"/>
+      <stop offset="0" stop-color="#7B5BFF"/>
+      <stop offset="0.5" stop-color="#9C4DFF"/>
+      <stop offset="1" stop-color="#E14BC9"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0.3" cy="0.25" r="0.9">
-      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.30"/>
-      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0"/>
+    <linearGradient id="cup" x1="150" y1="210" x2="370" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.6" stop-color="#F6F2FE"/>
+      <stop offset="1" stop-color="#E2D8F6"/>
+    </linearGradient>
+    <linearGradient id="lip" x1="150" y1="186" x2="362" y2="214" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EDE6FB"/>
+    </linearGradient>
+    <radialGradient id="cof" cx="0.42" cy="0.4" r="0.7">
+      <stop offset="0" stop-color="#A06E3E"/>
+      <stop offset="0.55" stop-color="#7A4E27"/>
+      <stop offset="1" stop-color="#523117"/>
     </radialGradient>
-    <!-- Pod body gradient (warm, punchy) -->
-    <linearGradient id="pod" x1="150" y1="210" x2="380" y2="430" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FF8A5B"/>
-      <stop offset="0.5" stop-color="#FF5E7E"/>
-      <stop offset="1" stop-color="#E23C66"/>
-    </linearGradient>
-    <linearGradient id="podShine" x1="180" y1="220" x2="260" y2="360" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="rim" x1="150" y1="300" x2="380" y2="320" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#E9EDF2"/>
-      <stop offset="0.5" stop-color="#B9C2CC"/>
-      <stop offset="1" stop-color="#8A95A1"/>
-    </linearGradient>
-    <linearGradient id="crema" x1="206" y1="300" x2="306" y2="300" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#F4D9A8"/>
-      <stop offset="1" stop-color="#D9A86A"/>
-    </linearGradient>
   </defs>
 
-  <!-- Background -->
-  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <rect width="512" height="512" rx="112" fill="url(#glow)"/>
+  <rect width="512" height="512" rx="0" fill="url(#bg)"/>
+  <ellipse cx="160" cy="104" rx="195" ry="92" fill="#ffffff" fill-opacity="0.12"/>
 
-  <!-- Steam -->
-  <g stroke="#FFFFFF" stroke-opacity="0.85" stroke-width="13" stroke-linecap="round" fill="none">
-    <path d="M214 150 C 196 128, 232 112, 214 88"/>
-    <path d="M256 138 C 238 116, 274 100, 256 76"/>
-    <path d="M298 150 C 280 128, 316 112, 298 88"/>
+  <!-- steam -->
+  <g stroke="#ffffff" stroke-opacity="0.85" stroke-width="15" stroke-linecap="round" fill="none">
+    <path d="M214 168 C194 144 234 126 214 100"/>
+    <path d="M256 158 C236 134 276 116 256 90"/>
+    <path d="M298 168 C278 144 318 126 298 100"/>
   </g>
 
-  <!-- Coffee pod (Vertuo dome) -->
+  <!-- ground shadow -->
+  <ellipse cx="252" cy="438" rx="140" ry="22" fill="#000000" fill-opacity="0.12"/>
+
+  <!-- handle (loop, behind body) -->
+  <path d="M352 250 C432 250 432 360 352 360" fill="none" stroke="url(#cup)" stroke-width="34" stroke-linecap="round"/>
+  <path d="M364 280 C410 280 410 330 364 330" fill="none" stroke="#9C4DFF" stroke-opacity="0.10" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- mug body (big, straight sides, rounded base) -->
+  <path d="M150 208 L360 208 L360 392 Q360 432 318 432 L192 432 Q150 432 150 392 Z" fill="url(#cup)"/>
+  <!-- right shade for volume -->
+  <path d="M316 216 L352 216 L352 392 Q352 420 326 426 C342 404 344 300 316 216 Z" fill="#C9BCEC" fill-opacity="0.45"/>
+  <!-- left highlight -->
+  <path d="M168 216 L196 216 C172 300 176 404 188 426 Q162 420 160 392 L160 216 Z" fill="#ffffff" fill-opacity="0.5"/>
+
+  <!-- rim / lip -->
+  <ellipse cx="255" cy="208" rx="105" ry="24" fill="url(#lip)"/>
+  <ellipse cx="255" cy="208" rx="105" ry="24" fill="none" stroke="#D9CDF3" stroke-width="2"/>
+  <!-- coffee -->
+  <ellipse cx="255" cy="208" rx="86" ry="17" fill="url(#cof)"/>
+  <ellipse cx="251" cy="204" rx="54" ry="9" fill="#B98249" fill-opacity="0.55"/>
+
+  <!-- cute face -->
   <g>
-    <!-- soft shadow -->
-    <ellipse cx="256" cy="406" rx="120" ry="20" fill="#000000" fill-opacity="0.18"/>
-    <!-- dome body -->
-    <path d="M150 318 C 150 230, 362 230, 362 318 L 362 322 C 362 332, 352 340, 340 340 L 172 340 C 160 340, 150 332, 150 322 Z" fill="url(#pod)"/>
-    <!-- crema top inside dome -->
-    <ellipse cx="256" cy="262" rx="78" ry="26" fill="url(#crema)"/>
-    <ellipse cx="256" cy="259" rx="60" ry="17" fill="#FBEBC9" fill-opacity="0.7"/>
-    <!-- shine -->
-    <path d="M176 312 C 176 252, 256 240, 256 240 C 220 252, 206 286, 206 312 Z" fill="url(#podShine)"/>
-    <!-- rim with ridges -->
-    <rect x="150" y="338" width="212" height="34" rx="16" fill="url(#rim)"/>
-    <g fill="#7E8893" fill-opacity="0.6">
-      <rect x="168" y="346" width="6" height="18" rx="3"/>
-      <rect x="190" y="346" width="6" height="18" rx="3"/>
-      <rect x="212" y="346" width="6" height="18" rx="3"/>
-      <rect x="234" y="346" width="6" height="18" rx="3"/>
-      <rect x="256" y="346" width="6" height="18" rx="3"/>
-      <rect x="278" y="346" width="6" height="18" rx="3"/>
-      <rect x="300" y="346" width="6" height="18" rx="3"/>
-      <rect x="322" y="346" width="6" height="18" rx="3"/>
-      <rect x="338" y="346" width="6" height="18" rx="3"/>
-    </g>
+    <circle cx="228" cy="312" r="13" fill="#5B3CC4"/>
+    <circle cx="284" cy="312" r="13" fill="#5B3CC4"/>
+    <path d="M222 340 C244 368 268 368 290 340" stroke="#5B3CC4" stroke-width="13" fill="none" stroke-linecap="round"/>
+    <circle cx="202" cy="334" r="13" fill="#FF7FB0" fill-opacity="0.55"/>
+    <circle cx="310" cy="334" r="13" fill="#FF7FB0" fill-opacity="0.55"/>
   </g>
 
-  <!-- Tracking check badge -->
-  <g>
-    <circle cx="356" cy="360" r="46" fill="#FFFFFF"/>
-    <circle cx="356" cy="360" r="46" fill="#10B981" fill-opacity="0.12"/>
-    <path d="M336 360 l 14 15 l 26 -30" stroke="#10B981" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  </g>
-
-  <!-- Sparkles for fun -->
-  <g fill="#FFFFFF">
-    <path d="M150 188 l 7 18 l 18 7 l -18 7 l -7 18 l -7 -18 l -18 -7 l 18 -7 Z" fill-opacity="0.95"/>
-    <path d="M372 150 l 5 12 l 12 5 l -12 5 l -5 12 l -5 -12 l -12 -5 l 12 -5 Z" fill-opacity="0.85"/>
-    <circle cx="126" cy="300" r="6" fill-opacity="0.7"/>
-    <circle cx="400" cy="250" r="5" fill-opacity="0.6"/>
+  <!-- sparkles -->
+  <g fill="#ffffff">
+    <path d="M122 214 l8 19 19 8 -19 8 -8 19 -8 -19 -19 -8 19 -8 Z" fill-opacity="0.95"/>
+    <path d="M396 186 l6 14 14 6 -14 6 -6 14 -6 -14 -14 -6 14 -6 Z" fill-opacity="0.9"/>
+    <circle cx="410" cy="312" r="6" fill-opacity="0.7"/>
   </g>
 </svg>
