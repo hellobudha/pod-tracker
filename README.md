@@ -1,4 +1,4 @@
-# ☕ Pod Tracker
+# ☕ Coffee Pod Tracker
 
 A mobile-first **progressive web app** for tracking Nespresso Vertuo pod ratings, tasting notes, and reorder status. Built for a single user, installable to the iPhone home screen, and works entirely offline — no backend, no accounts.
 
@@ -78,7 +78,7 @@ public/
 
 1. Open the [live URL](https://pod-tracker-indol.vercel.app/) in Safari.
 2. Tap **Share → Add to Home Screen**.
-3. Name it *Pod Tracker* → **Add**.
+3. Name it *Coffee Pods* → **Add**.
 
 The app launches fullscreen with the seed pods pre-loaded. Use **Settings → Reset all data** to restore defaults.
 

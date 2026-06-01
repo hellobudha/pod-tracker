@@ -105,7 +105,7 @@ function SettingsView({ theme, setTheme }) {
         </button>
       </div>
 
-      <p className="text-center text-xs text-gray-400 dark:text-gray-600 mt-6">Pod Tracker · Nespresso Vertuo</p>
+      <p className="text-center text-xs text-gray-400 dark:text-gray-600 mt-6">Coffee Pod Tracker · Nespresso Vertuo</p>
     </div>
   )
 }

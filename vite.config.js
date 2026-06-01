@@ -10,8 +10,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Pod Tracker',
-        short_name: 'Pods',
+        name: 'Coffee Pod Tracker',
+        short_name: 'Coffee Pods',
         start_url: '/',
         display: 'standalone',
         background_color: '#ffffff',
