@@ -11,7 +11,7 @@ A mobile-first **progressive web app** for tracking Nespresso Vertuo pod ratings
 - **Collection view** — pods grouped by cup size (Espresso, Double Espresso, Gran Lungo, Coffee), each split into *Tried* and *Yet to Try*, with a stats summary header.
 - **Pod cards** — name, status badge, Decaf/Flavored tags, strength + aroma pips, price, and a notes preview. **Tap the status badge** to change status inline, and **tap the reorder pill** to toggle reorder — no need to open the editor.
 - **Natural-language / voice commands** — tap ✨ and say or type *"tried Colombia, loved it, strong enough, add to reorder"*. A serverless Claude call turns it into structured edits and shows a plain-English confirmation before applying. Falls back to an on-device parser when offline, so it never hard-breaks. Voice (mic) appears when the device supports the Web Speech API.
-- **Prices (US · USD)** — a *Refresh prices* button in Settings attempts to look up current Nespresso prices; you can always **enter or override a price manually** per pod (sleeve price + pods/sleeve → per-pod price). Manual prices are never overwritten by a refresh.
+- **Prices (US · USD)** — a built-in **Nespresso Vertuo catalog** (`src/data/nespressoCatalog.js`: title, description, per-sleeve price, pods/sleeve). *Match Nespresso prices* in Settings fuzzy-matches your pods to the catalog and fills per-sleeve + per-pod prices offline. You can also **enter or override a price manually** per pod; manual prices are never overwritten.
 - **Add / edit sheet** — iOS-style slide-up bottom sheet. Capture category, tags, status, strength, aroma, notes, price, and reorder.
 - **Reorder list** — filtered view of everything marked for reorder, with one-tap clipboard copy.
 - **Dark mode** — Light / Dark / System, synced to the iOS status bar.
@@ -25,7 +25,8 @@ A mobile-first **progressive web app** for tracking Nespresso Vertuo pod ratings
 | Styling | Tailwind CSS v4 |
 | Persistence | `localStorage` (seeded on first launch) |
 | PWA | `vite-plugin-pwa` (manifest + service worker) |
-| Serverless | Vercel functions in `/api` (`parse-command`, `prices`) |
+| Serverless | Vercel function in `/api` (`parse-command`) |
+| Price data | Local catalog `src/data/nespressoCatalog.js` (Nespresso US Vertuo) |
 | AI | `@anthropic-ai/sdk` (server-side only, command parsing) |
 | Hosting | Vercel (auto-deploy on push to `main`) |
 

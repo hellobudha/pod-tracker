@@ -124,17 +124,17 @@ function SettingsView({ theme, setTheme, prices }) {
           disabled={state === 'loading'}
           className="w-full bg-emerald-500 disabled:opacity-50 text-white font-semibold py-2.5 rounded-xl text-sm active:bg-emerald-600 transition-colors"
         >
-          {state === 'loading' ? 'Fetching prices…' : 'Refresh prices'}
+          {state === 'loading' ? 'Matching…' : 'Match Nespresso prices'}
         </button>
         {state === 'done' && summary && (
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-            {summary.matched} of {summary.total} matched
-            {summary.degraded ? ' — Nespresso prices unavailable right now.' : '.'}
+            Priced {summary.matched} of {summary.total} pods from the catalog.
+            {summary.matched < summary.total ? ' Unmatched pods can be priced manually.' : ''}
           </p>
         )}
-        {state === 'error' && (
-          <p className="text-xs text-amber-600 dark:text-amber-400 mt-2">Couldn’t reach the price service. Try again later.</p>
-        )}
+        <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">
+          Prices from the Nespresso US Vertuo catalog (per sleeve). Manual prices are kept.
+        </p>
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-sm mb-4">
