@@ -7,6 +7,44 @@ const STATUS = {
 
 export default function StatusBadge({ status }) {
   const s = STATUS[status] ?? STATUS.yet_to_try
+
+  if (status === 'liked') {
+    return (
+      <span
+        className={`inline-flex items-center gap-0.5 text-xs font-medium pl-2 pr-2.5 py-0.5 rounded-full ${s.className}`}
+        aria-label="Liked"
+        title="Liked"
+      >
+        <span className="sb-thumb text-sm leading-none">👍</span>
+        <span className="sb-sparkle text-[9px] leading-none">✨</span>
+        <style>{`
+          @keyframes sb-wiggle {
+            0%, 70%, 100% { transform: rotate(0deg) scale(1); }
+            78% { transform: rotate(-18deg) scale(1.18); }
+            86% { transform: rotate(14deg) scale(1.18); }
+            94% { transform: rotate(-6deg) scale(1.08); }
+          }
+          @keyframes sb-twinkle {
+            0%, 70%, 100% { opacity: 0.5; transform: scale(0.85); }
+            80% { opacity: 1; transform: scale(1.3) rotate(15deg); }
+          }
+          .sb-thumb {
+            display: inline-block;
+            transform-origin: 70% 90%;
+            animation: sb-wiggle 2.8s ease-in-out infinite;
+          }
+          .sb-sparkle {
+            display: inline-block;
+            animation: sb-twinkle 2.8s ease-in-out infinite;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .sb-thumb, .sb-sparkle { animation: none; }
+          }
+        `}</style>
+      </span>
+    )
+  }
+
   return (
     <span
       className={`text-xs font-medium px-2 py-0.5 rounded-full ${s.className}`}
