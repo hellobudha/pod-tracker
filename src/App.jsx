@@ -7,13 +7,14 @@ import ReorderList from './components/ReorderList'
 import NavBar from './components/NavBar'
 
 const CATEGORY_LABELS = {
+  espresso: 'Espresso',
+  double_espresso: 'Double Espresso',
+  gran_lungo: 'Gran Lungo',
   coffee: 'Coffee',
-  flavored: 'Flavored & Specialty',
-  decaf: 'Decaf',
 }
 
 function CollectionView({ pods, onPodTap }) {
-  const categories = ['coffee', 'flavored', 'decaf']
+  const categories = ['espresso', 'double_espresso', 'gran_lungo', 'coffee']
 
   return (
     <div className="px-4 pt-2 pb-4 space-y-5">

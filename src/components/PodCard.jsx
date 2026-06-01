@@ -25,6 +25,21 @@ export default function PodCard({ pod, onClick }) {
         <StatusBadge status={pod.status} />
       </div>
 
+      {(pod.decaf || pod.flavored) && (
+        <div className="flex gap-1.5 mt-1.5">
+          {pod.decaf && (
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+              Decaf
+            </span>
+          )}
+          {pod.flavored && (
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-pink-100 text-pink-700 dark:bg-pink-500/20 dark:text-pink-300">
+              Flavored
+            </span>
+          )}
+        </div>
+      )}
+
       {pod.status !== 'yet_to_try' && (
         <div className="flex gap-4 mt-2">
           <div>

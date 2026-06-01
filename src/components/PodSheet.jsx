@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import IntensityPicker from './IntensityPicker'
 
 const STATUSES = [
@@ -8,10 +8,15 @@ const STATUSES = [
   { value: 'yet_to_try', label: 'Yet to Try',  color: 'bg-violet-400' },
 ]
 
-const CATEGORIES = ['coffee', 'flavored', 'decaf']
+const CATEGORIES = [
+  { value: 'espresso',        label: 'Espresso' },
+  { value: 'double_espresso', label: 'Double Espresso' },
+  { value: 'gran_lungo',      label: 'Gran Lungo' },
+  { value: 'coffee',          label: 'Coffee' },
+]
 
 const EMPTY = {
-  name: '', category: 'coffee', decaf: false,
+  name: '', category: 'coffee', decaf: false, flavored: false,
   status: 'yet_to_try', intensity: 0, aroma: 0,
   notes: '', reorder: false,
 }
@@ -56,12 +61,6 @@ export default function PodSheet({ pod, onSave, onDelete, onClose }) {
     if (dy > 80) close()
   }
 
-  // auto-set decaf when category is decaf
-  useEffect(() => {
-    if (form.category === 'decaf') set('decaf', true)
-    else if (form.category !== 'decaf' && form.decaf) set('decaf', false)
-  }, [form.category])
-
   return (
     <>
       {/* Backdrop */}
@@ -100,21 +99,47 @@ export default function PodSheet({ pod, onSave, onDelete, onClose }) {
             />
           </div>
 
-          {/* Category */}
+          {/* Category (cup size) */}
           <div className="mb-4">
             <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">Category</label>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {CATEGORIES.map(c => (
                 <button
-                  key={c}
+                  key={c.value}
                   type="button"
-                  onClick={() => set('category', c)}
-                  className={`flex-1 py-2 rounded-xl text-sm font-medium capitalize border-2 transition-all
-                    ${form.category === c
+                  onClick={() => set('category', c.value)}
+                  className={`py-2 rounded-xl text-sm font-medium border-2 transition-all
+                    ${form.category === c.value
                       ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400'
                       : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400'}`}
                 >
-                  {c}
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Extra info tags */}
+          <div className="mb-4">
+            <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">Extra Info</label>
+            <div className="flex gap-2">
+              {[
+                { key: 'decaf', label: 'Decaf' },
+                { key: 'flavored', label: 'Flavored' },
+              ].map(tag => (
+                <button
+                  key={tag.key}
+                  type="button"
+                  onClick={() => {
+                    set(tag.key, !form[tag.key])
+                    if (navigator.vibrate) navigator.vibrate(10)
+                  }}
+                  className={`flex-1 py-2 rounded-xl text-sm font-medium border-2 transition-all
+                    ${form[tag.key]
+                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400'
+                      : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400'}`}
+                >
+                  {tag.label}
                 </button>
               ))}
             </div>

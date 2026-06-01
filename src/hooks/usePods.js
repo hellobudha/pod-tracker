@@ -4,10 +4,28 @@ import { SEED_PODS } from '../data/seed'
 
 const STORAGE_KEY = 'pod-tracker-pods'
 
+const CUP_SIZES = ['espresso', 'double_espresso', 'gran_lungo', 'coffee']
+
+// Migrate the old model (category was coffee/flavored/decaf) to the new one
+// where category is a cup size and decaf/flavored are independent tags.
+function migrate(pod) {
+  const next = { flavored: false, ...pod }
+  if (pod.category === 'flavored') {
+    next.category = 'coffee'
+    next.flavored = true
+  } else if (pod.category === 'decaf') {
+    next.category = 'coffee'
+    next.decaf = true
+  } else if (!CUP_SIZES.includes(pod.category)) {
+    next.category = 'coffee'
+  }
+  return next
+}
+
 function load() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) return JSON.parse(raw)
+    if (raw) return JSON.parse(raw).map(migrate)
   } catch {}
   return null
 }
